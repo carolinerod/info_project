@@ -1,9 +1,5 @@
 from django.db import models
 
-# Create your models here.
-<<<<<<< HEAD
-from django.db import models
-
 class Person(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
@@ -24,5 +20,4 @@ class Book(models.Model):
                 "pages" : {self.pages},
                 "published_date" : "{self.published_date}"
                 }}""")
-=======
->>>>>>> 48b606f33ff92a87352ffb733161295fbe4f4df5
+

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Obrigado!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="alert alert-success">
+            <h1>Obrigado, {{ name }}!</h1>
+            <p>Seu feedback com a nota "{{ satisfaction_display }}" foi recebido com sucesso.</p>
+            
+            <a href="{% url 'feedback' %}" class="btn btn-primary">Enviar outro feedback</a>
+        </div>
+    </div>
+</body>
+</html>
+

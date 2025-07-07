@@ -53,3 +53,22 @@ class PersonForm(forms.ModelForm):
         if age > 150:
             raise forms.ValidationError("A idade não pode ser maior que 150 anos.")
         return age
+    
+    
+
+class FeedbackForm(forms.Form):
+    SATISFACTION_CHOICES = [
+        ('EX', 'Excelente'),
+        ('BOM', 'Bom'),
+        ('REG', 'Regular'),
+        ('RUI', 'Ruim'),
+    ]
+
+    name = forms.CharField(label="Seu nome", max_length=100)
+    email = forms.EmailField(label="E-mail")
+    comment = forms.CharField(label="Comentário", widget=forms.Textarea)
+    satisfaction = forms.ChoiceField(
+        label="Nota de Satisfação",
+        choices=SATISFACTION_CHOICES,
+        widget=forms.RadioSelect
+    )

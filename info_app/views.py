@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import json
 import platform
 import socket
@@ -10,7 +9,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import BookForm, ContactForm, PersonForm
+# Apenas adicionei FeedbackForm a sua lista de importações original
+from .forms import BookForm, ContactForm, PersonForm, FeedbackForm
 from .models import Person, Book
 
 class HelloWorldView(View):
@@ -82,83 +82,21 @@ def contact_view(request):
         context = {'success': True, 'name': name }
         return render(request, 'info_app/contact.html', context)
     return render(request, 'info_app/contact.html', {'form': form})
-=======
-from django.shortcuts import render
 
-# Create your views here.
-from django.http import JsonResponse
-from datetime import datetime
-from django.views import View
-from django.http import JsonResponse
-from django.utils.timezone import now
-from django.views.generic import TemplateView
-
-class AboutView(TemplateView):
-    template_name = "about.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["site_name"] = "Atividade de ensino"
-        context["description"] = "Trabalho part2 "
-        context["year"] = now().year
-        return context
-
-#/welcome
-def welcome(request):
-    return JsonResponse({"message": "Welcome to the Personal Info API!"})
-class WelcomeView(View):
-    def get(self, request):
-        return JsonResponse({"message": "Welcome to the Personal Info API!"})
-
-# /goodbye
-def goodbye(request):
-    return JsonResponse({"message": "Goodbye, see you next time!"})
-class GoodbyeView(View):
-    def get(self, request):
-        return JsonResponse({"message": "Goodbye, see you next time!"})
-
-# /current-time
-def current_time(request):
-    now = datetime.now().strftime("%H:%M:%S")
-    return JsonResponse({"current_time": now})
-
-# /name=SeuNome
-def greet(request):
-    name = request.GET.get('name', 'Stranger')
-    return JsonResponse({"message": f"Hello, {name}!"})
-
-# 5️⃣ /age-category?age=XX
-def age_category(request):
-    age = request.GET.get('age')
-    if age is None:
-        return JsonResponse({"error": "Missing 'age' parameter."}, status=400)
-    try:
-        age = int(age)
-    except ValueError:
-        return JsonResponse({"error": "Invalid 'age' parameter."}, status=400)
-
-    if 0 <= age <= 12:
-        category = "Child"
-    elif 13 <= age <= 17:
-        category = "Teenager"
-    elif 18 <= age <= 59:
-        category = "Adult"
-    elif age >= 60:
-        category = "Senior"
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            satisfaction = form.cleaned_data['satisfaction']
+            satisfaction_display = dict(form.fields['satisfaction'].choices)[satisfaction]
+            
+            context = {
+                'name': name,
+                'satisfaction_display': satisfaction_display
+            }
+            return render(request, 'info_app/feedback_success.html', context)
     else:
-        category = "Invalid age"
+        form = FeedbackForm()
 
-    return JsonResponse({"category": category})
-
-# 6️⃣ /sum/<num1>/<num2>
-def sum_numbers(request, num1, num2):
-    try:
-        total = int(num1) + int(num2)
-        return JsonResponse({"sum": total})
-    except ValueError:
-        return JsonResponse({"error": "Invalid input, please provide two integers."})
-   
-    
-        
-
->>>>>>> 48b606f33ff92a87352ffb733161295fbe4f4df5
+    return render(request, 'info_app/feedback.html', {'form': form})
